@@ -1,0 +1,9 @@
+<% include partials/header %>
+<p>
+    <ul>
+        <% users.forEach(item=>{ %>
+        <li><%= item.username %> - <%= item.password %></li>
+        <% }) %>
+    </ul>
+</p>
+<% include partials/footer %>

@@ -1,0 +1,26 @@
+<% include partials/header %>
+<h3>Blockchain Transfer Assets</h3>
+<h5>Transfer
+    <%=assetId %>
+</h5>
+<form method="POST" action="/transfer">
+    <table>
+        <tr>
+            <td>Select New Owner</td>
+            <td>
+                <select name="owner">
+                    <option value="MFG1">MFG1</option>
+                    <option value="DL1">DL1</option>
+                    <option value="RS1">RS1</option>
+                </select>
+            </td>            
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input type="hidden" name="assetId" value=<%=assetId %> />
+                <input type="submit" value="Transfer" />
+            </td>
+        </tr>
+    </table>
+</form>
+<% include partials/footer %>

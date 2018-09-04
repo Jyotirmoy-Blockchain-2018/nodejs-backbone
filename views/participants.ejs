@@ -1,0 +1,8 @@
+<% include partials/header %>
+<h3>Blockchain Participants</h3>
+<% owners.forEach(item=>{ %>
+<li>
+    <%= item.name %> -<%= item.default %>
+</li>
+<% }) %>
+<% include partials/footer %>

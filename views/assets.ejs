@@ -1,0 +1,47 @@
+<% include partials/header %>
+<h3>Blockchain Assets</h3>
+<% if(card == 'NSF1'){ %>
+    <form action="/addssset" method="POST">
+        <table>
+            <tr>
+                <td><label>Sticker Id</label></td>
+                <td><input type="text" name="stickerid" /></td>
+            </tr>
+            <tr>
+                <td><label>Product Code</label></td>
+                <td><input type="text" name="stickercode" /></td>
+            </tr>
+            <tr>
+                <td><label>Owner</label></td>
+                <td><input type="text" name="owner" /></td>
+            </tr>
+            <tr>
+                <td colspan="2"><input type="submit" value="Save Asset" /></td>
+            </tr>
+        </table>
+    </form>
+<% } %>
+<br/>
+<table>
+    <thead>
+        <tr>
+            <th>Sticker ID</th>
+            <th>Product Sticker</th>
+            <th>Status</th>
+            <th>Owner</th>
+            <% if(card != 'RS1'){ %><th>Transfer Assets</th><% } %>
+        </tr>
+    </thead>
+    <tbody>
+        <% assets.forEach(item=>{ %>
+        <tr>
+            <td><%=item.stickerId %></td>
+            <td><%=item.productCode %></td>
+            <td><%=item.status %></td>
+            <td><%=item.owner %></td>
+            <% if(card != 'RS1'){ %><td><a href=<%="/transferasset/"+item.stickerId %>>Transfer</a></td><% } %>
+        </tr>
+        <% }) %>
+    </tbody>
+</table>
+    <% include partials/footer %>
