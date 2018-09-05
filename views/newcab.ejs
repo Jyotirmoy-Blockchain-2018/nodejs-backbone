@@ -1,0 +1,14 @@
+<% include partials/header %>
+<p>
+    <h3>Add Cab</h3>
+    <form action="/addcab" method="POST">
+        <label>Cab Name</label><br />
+        <input name="Cab_Name" type="text" value="" /><br />
+        <label>Vehicle Number</label><br />
+        <input name="Cab_Vin" type="text" value="" /><br />
+        <label>Driver Name</label><br />
+        <input name="Cab_Driver" type="text" value="" /><br />
+        <input type="submit" value="submit" />
+    </form>
+</p>
+<% include partials/footer %>

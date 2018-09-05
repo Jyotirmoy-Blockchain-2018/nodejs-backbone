@@ -1,0 +1,27 @@
+<% include partials/header %>
+<h3>View Cabs</h3>
+<table>
+    <thead>
+        <tr>
+            <th>Cab Name</th>
+            <th>Cab Number</th>
+            <th>Cab Driver</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% cabrecords.forEach(item=>{ %>
+        <tr>
+            <td><%= item.Cab_Name %></td>
+            <td><%= item.Cab_Vin %></td>
+            <td><%= item.Cab_Driver %></td>
+            <td><form method="post" action="/deletecab">
+    <input type="hidden" name="cabid" value=<%= item.ID %> />
+    <input type="submit" class="btn btn-danger" value="Delete"/>
+</form></td>
+        </tr>
+        <% }) %>
+    </tbody>
+</table>
+
+<% include partials/footer %>

@@ -1,8 +1,0 @@
-<% include partials/header %>
-<h3>Blockchain Transaction History</h3>
-<% historyrecords.forEach(item=>{ %>
-<li>
-    <%= item.transactionType %> -<%= item.transactionTimestamp %> - <b>Invoker:- </b><%= item.participantInvoking %>
-</li>
-<% }) %>
-<% include partials/footer %>

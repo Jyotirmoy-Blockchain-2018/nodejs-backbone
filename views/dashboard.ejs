@@ -1,11 +1,8 @@
 <% include partials/header %>
-<h3>Blockchain Dashboard</h3>
-Hi, <%=card %>
+<h3>Holiday Planner</h3>
+Hi,
 <br/>
-<ul>
-    <li><a href="/participants">Participants</a></li>
-    <li><a href="/assets">Assets</a></li>
-    <li><a href="/historian">System History</a></li>
-</ul>
+<form method="POST" action="/newcab"><button class="btn btn-primary" type="submit" >Add New Cab</button></form>
+<form method="POST" action="/allcabs"><button class="btn btn-primary" type="submit">View Cabs</button></form>
 
 <% include partials/footer %>
