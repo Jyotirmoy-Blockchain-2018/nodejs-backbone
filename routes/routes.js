@@ -1,9 +1,9 @@
 var request = require('request');
 var pool = require('../db/db-config');
-
+var JWT = require('jsonwebtoken');
 const JwtGenerator = require('../services/jwtgenerator');
 var mongo = require('mongodb').MongoClient;
-var url = "mongodb://192.168.99.100:27017/";
+
 var localStorage = require('localStorage');
 module.exports = (app) => {
     // Index Page
@@ -26,35 +26,15 @@ module.exports = (app) => {
     // Post Request to Get Token
     app.post('/login',(req,res)=>{
         try {
-            var JwtToken = JwtGenerator(req.body.username);
-            var cardName = req.body.cardname;
-            //res.send(JwtToken);
-            let options = {
-                method: 'GET',
-                url: 'http://54.186.160.3:3000/auth/jwt/callback?token=' + JwtToken,
-                maxRedirects: '3',
-                followRedirect: false
+            const user = {
+                id:'1',
+                username:'Jyotirmoy',
+                email:'jyotirmoy2411@gmail.com'
             };
-            console.log(JwtToken);
-            request(options, function (error, response, body) {
-                // upon a successful request, cookies are stored in response.headers['set-cookie']
-                var name = "access_token=";
-                console.log('Token Request Recieved');
-                var access_token = '';
-                var ca = decodeURIComponent(response.headers['set-cookie'][0]).split(';');
-                for (var i = 0; i < ca.length; i++) {
-                    var c = ca[i];
-                    while (c.charAt(0) == ' ') {
-                        c = c.substring(1);
-                    }
-                    if (c.indexOf(name) == 0) {
-                        access_token = c.substring(name.length, c.length);
-                    }
-                }
-                var matches = access_token.match(/^s:(.+?)\./);                
-                localStorage.setItem('access_token',matches[1]);
-                localStorage.setItem('card',cardName);
-                require('../services/activateWalletCard')(matches[1],true, cardName, req, res);
+            JWT.sign({user: user},'secret',(error,token)=>{
+                res.json({
+                    token:token
+                });
             });
         } catch (error) {
             console.log(error);
@@ -69,13 +49,21 @@ module.exports = (app) => {
         res.render('newcab');
     });
 
-    app.post('/addcab',(req,res)=>{
-        pool.query('INSERT INTO cab_details_master SET ?',req.body, (error,result)=>{
-            if(error){res.send(error);}
+    app.post('/addcab',verifytoken,(req,res)=>{
+        JWT.verify(req.token,'secret',(error,data)=>{
+            if(error){
+                res.sendStatus(403);
+            }
             else{
-                res.redirect('/allcabs');
+                pool.query('INSERT INTO cab_details_master SET ?', req.body, (error, result) => {
+                    if (error) { res.send(error); }
+                    else {
+                        res.redirect('/allcabs');
+                    }
+                });
             }
         });
+       
     });
     
     app.all('/allcabs',function(req,res){
@@ -120,5 +108,18 @@ function activateCard(req,res,next){
     }
     else{
         res.redirect('/');
+    }
+}
+// Authorization: Bearer
+function verifytoken(req,res,next){
+    const bearerHeader = req.headers['authorization'];
+    if(typeof bearerHeader !== undefined){
+        const bearer = bearerHeader.split(' ');
+        const bearerToken = bearer[1];
+        req.token = bearerToken;
+        next();
+    }
+    else{
+        res.sendStatus(403).send('Authorization Required');
     }
 }
